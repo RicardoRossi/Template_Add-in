@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SolidWorks.Interop.sldworks;
+using SolidWorks.Interop.swpublished;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using SolidWorks.Interop.sldworks;
-using SolidWorks.Interop.swconst;
-using SolidWorks.Interop.swpublished;
 
 namespace MeuAddin
 {
@@ -94,13 +90,17 @@ namespace MeuAddin
 
         #endregion
 
-        private ISldWorks m_App;
+        
+
+        private SldWorks swApp;
 
         public bool ConnectToSW(object ThisSW, int Cookie)
         {
-            m_App = ThisSW as ISldWorks;
+            swApp = ThisSW as SldWorks;
 
-            m_App.SendMsgToUser("Hello World!");
+            swApp.SendMsgToUser("Hello World!");
+
+            ApplicationStartup(swApp); // Passa um swApp para a classe derivada que está sobrescrevendo o método
 
             return true;
         }
@@ -109,5 +109,7 @@ namespace MeuAddin
         {
             return true;
         }
+
+        public virtual void ApplicationStartup(SldWorks solidWorks) { } // Sobrescrito na classe derivada
     }
 }
